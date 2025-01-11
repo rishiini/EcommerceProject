@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/products/")
@@ -15,9 +17,11 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     private final ProductService productService;
+    private final RestTemplate restTemplate;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, RestTemplate restTemplate) {
         this.productService = productService;
+        this.restTemplate = restTemplate;
     }
 
     @GetMapping({"/{id}"})
@@ -30,11 +34,19 @@ public class ProductController {
         return productService.createProduct(product);
     }
 
-    @PutMapping("/{id}")
-    public Product modifyProduct(@PathVariable("id") Long id){
-        return productService.modifyProduct(id);
+    @PutMapping("")
+    public Product modifyProduct(@RequestBody Product product){
+        return productService.modifyProduct(product);
     }
 
+    @PatchMapping("/{id}")
+    public Product updateUserStatus(@PathVariable Long id, @RequestBody Product product){
+        return productService.updateProduct(id, product);
+    }
 
+    @DeleteMapping("/{id}")
+    public Product deleteProduct(@PathVariable Long id){
+        return productService.deleteProduct(id);
+    }
 
 }
