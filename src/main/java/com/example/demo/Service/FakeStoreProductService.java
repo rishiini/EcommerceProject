@@ -29,4 +29,31 @@ public class FakeStoreProductService implements ProductService {
             return new Product(); // Placeholder for a default product
         }
     }
+
+    @Override
+    public Product createProduct(Product product) {
+        Product p1 = new Product();
+        p1.setImageURL(product.getImageURL());
+        p1.setCategory(product.getCategory());
+        p1.setPrice(product.getPrice());
+        p1.setTitle(product.getTitle());
+        return p1;
+    }
+
+    //We're using put
+    @Override
+    public Product modifyProduct(Long id) {
+        Product getProduct = restTemplate.getForObject("https://fakestoreapi.com/products/{id}", Product.class, id);
+
+        Product p = new Product();
+        if(getProduct != null){
+            getProduct.setTitle(p.getTitle());
+            getProduct.setPrice(p.getPrice());
+            getProduct.setCategory(p.getCategory());
+            getProduct.setImageURL(p.getImageURL());
+        }
+        restTemplate.put("https://fakestoreapi.com/products/{id}", getProduct, id);
+        return p;
+
+    }
 }
