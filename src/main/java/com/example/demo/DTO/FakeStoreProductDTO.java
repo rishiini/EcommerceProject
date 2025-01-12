@@ -3,6 +3,8 @@ package com.example.demo.DTO;
 import com.example.demo.Model.Category;
 import com.example.demo.Model.Product;
 
+import java.util.List;
+
 
 public class FakeStoreProductDTO {
     private Long id;
@@ -26,6 +28,7 @@ public class FakeStoreProductDTO {
 
         return product;
     }
+
 
     public String getTitle() {
         return title;

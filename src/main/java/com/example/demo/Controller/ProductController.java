@@ -1,5 +1,6 @@
 package com.example.demo.Controller;
 
+import com.example.demo.Model.Category;
 import com.example.demo.Model.Product;
 import com.example.demo.Service.ProductService;
 import lombok.AllArgsConstructor;
@@ -11,22 +12,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/products/")
 //@RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
-    private final RestTemplate restTemplate;
 
-    public ProductController(ProductService productService, RestTemplate restTemplate) {
+    public ProductController(ProductService productService) {
         this.productService = productService;
-        this.restTemplate = restTemplate;
     }
 
     @GetMapping({"/{id}"})
     public Product getProduct(@PathVariable("id") Long id){
         return productService.getProduct(id);
+    }
+
+    @GetMapping("")
+    public List<Product> getAllProduct(){
+        return productService.getAllProduct();
+    }
+
+    @GetMapping("/limit")
+    @ResponseBody
+    public List<Product> getProductByLimit(@RequestParam("limit") Long limit){
+        return productService.getProductByLimit(limit);
     }
 
     @PostMapping()
@@ -49,6 +61,11 @@ public class ProductController {
         return productService.deleteProduct(id);
     }
 
-    // Category
-    
+
+    //Category
+    //Fetching all the categories
+    @GetMapping("/categories")
+    public List<String> getAllCategory(){
+        return productService.getAllCategory();
+    }
 }

@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RazorPayClientConfig {
 
-    @Value("${razorpay.key.id}")
+//    @Value("${razorpay.key.id}")
     private String razorPayKeyId;
 
-    @Value("${razorpay.key.secret}")
+//    @Value("${razorpay.key.secret}")
     private String razorPayKeySecret;
 
     @Bean
