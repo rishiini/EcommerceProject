@@ -15,7 +15,11 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class FakeStoreProductService implements ProductService {
@@ -39,6 +43,25 @@ public class FakeStoreProductService implements ProductService {
             return new Product(); // Placeholder for a default product
         }
     }
+
+    @Override
+    public List<Product> getAllProduct() {
+        FakeStoreProductDTO[] listOfProduct = restTemplate.getForObject("https://fakestoreapi.com/products", FakeStoreProductDTO[].class);
+        List<Product> productList = new ArrayList<>();
+        for(FakeStoreProductDTO dto : listOfProduct){
+            productList.add(dto.toProduct());
+        }
+        return productList;
+    }
+
+    @Override
+    public List<Product> getProductByLimit(Long id){
+        FakeStoreProductDTO[] listOfProduct = restTemplate.getForObject("https://fakestoreapi.com/products?limit="+id, FakeStoreProductDTO[].class);
+        return Arrays.stream(listOfProduct)
+                .map(FakeStoreProductDTO::toProduct)
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public Product createProduct(Product product) {
@@ -109,4 +132,16 @@ public class FakeStoreProductService implements ProductService {
 
         return fakeStoreProductDto.toProduct();
     }
+
+    //Limit Product
+
+    //Getting all Category
+    @Override
+    public List<String> getAllCategory() {
+        String[] response = restTemplate.getForObject("https://fakestoreapi.com/products/categories", String[].class);
+        return Arrays.asList(response);
+    }
+
+
+
 }
