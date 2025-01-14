@@ -1,14 +1,21 @@
 package com.example.demo.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+
 import java.util.List;
 
 //@Getter
 //@Setter
-
+@Entity
+@Table(name = "category")
 public class Category {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String title;
-//    @OneToMany(mappedBy = "category", cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "category", cascade = {CascadeType.REMOVE})
+    @JsonIgnore
     private List<Product> listOfProduct;
 
     public long getId() {

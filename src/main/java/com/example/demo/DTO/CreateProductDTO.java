@@ -1,29 +1,11 @@
-package com.example.demo.Model;
+package com.example.demo.DTO;
 
-import jakarta.persistence.*;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+import lombok.Getter;
+import lombok.Setter;
 
-@Entity
-@Table(name = "product")
-public class Product {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-    private String title;
-    private String description;
-    private String price;
-    @ManyToOne(cascade = {CascadeType.PERSIST})
-    private Category category;
-    private String imageURL;
+public class CreateProductDTO {
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getTitle() {
         return title;
@@ -49,11 +31,11 @@ public class Product {
         this.price = price;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
@@ -64,6 +46,9 @@ public class Product {
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
     }
-
-
+    private String title;
+    private String description;
+    private String price;
+    private String category;
+    private String imageURL;
 }

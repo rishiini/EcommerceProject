@@ -1,7 +1,9 @@
 package com.example.demo.Service;
 
+import com.example.demo.DTO.CreateProductDTO;
 import com.example.demo.DTO.FakeStoreProductDTO;
 import com.example.demo.DTO.PatchProductDTO;
+import com.example.demo.DTO.UpdateProductDTO;
 import com.example.demo.Model.Category;
 import com.example.demo.Model.Product;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +23,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-@Service
+@Service("fakestoreproductservice")
 public class FakeStoreProductService implements ProductService {
     private final RestTemplate restTemplate;
 
@@ -133,6 +135,11 @@ public class FakeStoreProductService implements ProductService {
         return fakeStoreProductDto.toProduct();
     }
 
+    @Override
+    public void deleteProductFromDatabase(Long id) {
+
+    }
+
     //Limit Product
 
     //Getting all Category
@@ -142,6 +149,20 @@ public class FakeStoreProductService implements ProductService {
         return Arrays.asList(response);
     }
 
+    @Override
+    public Product getProductById(Long id) {
+        return null;
+    }
+
+    @Override
+    public Product createProductToDatabase(CreateProductDTO createProductDTO) {
+        return null;
+    }
+
+    @Override
+    public Product updateProductInDB(Long id, UpdateProductDTO updateProductDTO) {
+        return null;
+    }
 
 
 }

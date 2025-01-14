@@ -1,5 +1,7 @@
 package com.example.demo.Service;
 
+import com.example.demo.DTO.CreateProductDTO;
+import com.example.demo.DTO.UpdateProductDTO;
 import com.example.demo.Model.Category;
 import com.example.demo.Model.Product;
 
@@ -13,9 +15,11 @@ public interface ProductService {
     Product modifyProduct(Product product);
     Product deleteProduct(Long id);
     Product updateProduct(Long id, Product product);
-
+    void deleteProductFromDatabase(Long id);
     List<Product> getProductByLimit(Long id);
 
     List<String> getAllCategory();
-
+    Product getProductById(Long id);
+    Product createProductToDatabase(CreateProductDTO createProductDTO);
+    Product updateProductInDB(Long id, UpdateProductDTO updateProductDTO);
 }

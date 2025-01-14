@@ -1,12 +1,17 @@
 package com.example.demo.Controller;
 
+import com.example.demo.DTO.CreateProductDTO;
+import com.example.demo.DTO.UpdateProductDTO;
 import com.example.demo.Model.Category;
 import com.example.demo.Model.Product;
+import com.example.demo.Repository.ProductRepository;
+import com.example.demo.Service.OwnProductService;
 import com.example.demo.Service.ProductService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +25,19 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    private final OwnProductService ownProductService;
+    private final ProductRepository productRepository;
 
-    public ProductController(ProductService productService) {
+    public ProductController(@Qualifier("ownproductservice") ProductService productService, OwnProductService ownProductService, ProductRepository productRepository) {
         this.productService = productService;
+        this.ownProductService = ownProductService;
+        this.productRepository = productRepository;
     }
 
     @GetMapping({"/{id}"})
     public Product getProduct(@PathVariable("id") Long id){
-        return productService.getProduct(id);
+//        return productService.getProduct(id);
+        return ownProductService.getProductById(id);
     }
 
     @GetMapping("")
@@ -42,8 +52,8 @@ public class ProductController {
     }
 
     @PostMapping()
-    public Product createProduct(@RequestBody Product product){
-        return productService.createProduct(product);
+    public Product createProduct(@RequestBody CreateProductDTO createProductDTO){
+        return ownProductService.createProductToDatabase(createProductDTO);
     }
 
     @PutMapping("")
@@ -52,15 +62,15 @@ public class ProductController {
     }
 
     @PatchMapping("/{id}")
-    public Product updateUserStatus(@PathVariable Long id, @RequestBody Product product){
-        return productService.updateProduct(id, product);
+    public Product updateUserStatus(@PathVariable Long id, @RequestBody UpdateProductDTO product){
+        return ownProductService.updateProductInDB(id, product);
     }
 
     @DeleteMapping("/{id}")
-    public Product deleteProduct(@PathVariable Long id){
-        return productService.deleteProduct(id);
+    public String deleteProduct(@PathVariable Long id){
+        productService.deleteProductFromDatabase(id);
+        return "Successfully Deleted";
     }
-
 
     //Category
     //Fetching all the categories
