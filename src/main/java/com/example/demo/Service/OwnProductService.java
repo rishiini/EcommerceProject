@@ -7,8 +7,12 @@ import com.example.demo.Model.Product;
 import com.example.demo.Repository.CategoryRepository;
 import com.example.demo.Repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+//import java.awt.print.Pageable;
 import java.util.List;
 
 @Service("ownproductservice")
@@ -59,8 +63,9 @@ public class OwnProductService implements ProductService{
     }
 
     @Override
-    public List<Product> getProductByLimit(Long id) {
-        return List.of();
+    public List<Product> getProductByLimit(Long limit) {
+        Pageable pageable = PageRequest.of(0, limit.intValue());
+        return productRepository.findAll(pageable).getContent();
     }
 
     @Override

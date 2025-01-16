@@ -16,7 +16,7 @@ public interface ProductService {
     Product deleteProduct(Long id);
     Product updateProduct(Long id, Product product);
     void deleteProductFromDatabase(Long id);
-    List<Product> getProductByLimit(Long id);
+    List<Product> getProductByLimit(Long limit);
 
     List<String> getAllCategory();
     Product getProductById(Long id);
