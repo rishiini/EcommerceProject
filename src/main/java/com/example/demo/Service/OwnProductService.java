@@ -86,7 +86,7 @@ public class OwnProductService implements ProductService{
         p.setPrice(createProductDTO.getPrice());
         p.setImageURL(createProductDTO.getImageURL());
 
-            Category categoryFromDatabase = categoryRepository.findByTitle(createProductDTO.getCategory());
+        Category categoryFromDatabase = categoryRepository.findByTitle(createProductDTO.getCategory());
         if(categoryFromDatabase == null){
             Category newCategory = new Category();
             newCategory.setTitle(createProductDTO.getCategory());

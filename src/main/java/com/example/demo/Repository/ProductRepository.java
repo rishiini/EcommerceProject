@@ -17,6 +17,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     void deleteById(Long id);
 
-    @Override
-    Page<Product> findAll(Pageable pageable);
+//    Page<Product> findAll(Pageable pageable);
 }
