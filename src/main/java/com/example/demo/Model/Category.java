@@ -3,13 +3,14 @@ package com.example.demo.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 //@Getter
 //@Setter
 @Entity
 @Table(name = "category")
-public class Category {
+public class Category implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;

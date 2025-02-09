@@ -28,7 +28,7 @@ public class ProductController {
     private final OwnProductService ownProductService;
     private final ProductRepository productRepository;
 
-    public ProductController(@Qualifier("ownproductservice") ProductService productService, OwnProductService ownProductService, ProductRepository productRepository) {
+    public ProductController(@Qualifier("fakestoreproductservice") ProductService productService, OwnProductService ownProductService, ProductRepository productRepository) {
         this.productService = productService;
         this.ownProductService = ownProductService;
         this.productRepository = productRepository;
@@ -37,7 +37,7 @@ public class ProductController {
     @GetMapping({"/{id}"})
     public Product getProduct(@PathVariable("id") Long id){
 //        return productService.getPropduct(id);
-        return ownProductService.getProductById(id);
+        return productService.getProduct(id);
     }
 
     @GetMapping("")
@@ -61,16 +61,16 @@ public class ProductController {
         return productService.modifyProduct(product);
     }
 
-    @PatchMapping("/{id}")
-    public Product updateUserStatus(@PathVariable Long id, @RequestBody UpdateProductDTO product){
-        return ownProductService.updateProductInDB(id, product);
-    }
-
-    @DeleteMapping("/{id}")
-    public String deleteProduct(@PathVariable Long id){
-        productService.deleteProductFromDatabase(id);
-        return "Successfully Deleted";
-    }
+//    @PatchMapping("/{id}")
+//    public Product updateUserStatus(@PathVariable Long id, @RequestBody UpdateProductDTO product){
+//        return ownProductService.updateProductInDB(id, product);
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public String deleteProduct(@PathVariable Long id){
+//        productService.deleteProductFromDatabase(id);
+//        return "Successfully Deleted";
+//    }
 
     //Category
     //Fetching all the categories

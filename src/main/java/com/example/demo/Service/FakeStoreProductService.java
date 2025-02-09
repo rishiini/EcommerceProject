@@ -1,5 +1,6 @@
 package com.example.demo.Service;
 
+import com.example.demo.Config.RedisTemplateConfig;
 import com.example.demo.DTO.CreateProductDTO;
 import com.example.demo.DTO.FakeStoreProductDTO;
 import com.example.demo.DTO.PatchProductDTO;
@@ -8,6 +9,7 @@ import com.example.demo.Model.Category;
 import com.example.demo.Model.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -26,24 +28,42 @@ import java.util.stream.Collectors;
 @Service("fakestoreproductservice")
 public class FakeStoreProductService implements ProductService {
     private final RestTemplate restTemplate;
-
-    public FakeStoreProductService(RestTemplate restTemplate) {
+    private final RedisTemplate redisTemplate;
+    public FakeStoreProductService(RestTemplate restTemplate, RedisTemplate redisTemplate) {
         this.restTemplate = restTemplate;
+        this.redisTemplate = redisTemplate;
     }
 
 
 
     @Override
     public Product getProduct(Long id) {
-        try {
-            ResponseEntity<FakeStoreProductDTO> response = restTemplate.getForEntity("https://fakestoreapi.com/products/" + id, FakeStoreProductDTO.class);
-            return Objects.requireNonNull(response.getBody()).toProduct();
-        } catch (HttpServerErrorException e) {
-            // Handle the server error (e.g., log it, return a default value, etc.)
-            System.err.println("Server error: " + e.getStatusCode() + " - " + e.getStatusText());
-            // Return a default Product or handle it as per your application's requirement
-            return new Product(); // Placeholder for a default product
+        System.out.println("Debugging 1");
+        //Is is to going to fetch product from fakestore?
+        /*
+        Check for the product with this id in the cache??
+        if present, return, else go to db and fetch
+         */
+
+        Product cachedProduct = (Product) redisTemplate.opsForHash().get("Products", "Products_" + id); //Products, Products_1
+        if(cachedProduct != null){
+            /*
+            Cache hit
+             */
+            return cachedProduct;
         }
+
+        // Cache miss
+        ResponseEntity<FakeStoreProductDTO> fakeStoreProductDTOResponse = restTemplate.getForEntity("https://fakestoreapi.com/products/" + id,
+                FakeStoreProductDTO.class);
+
+        System.out.println("Debugging");
+
+        Product response = fakeStoreProductDTOResponse.getBody().toProduct();
+
+        redisTemplate.opsForHash().put("Products", "Products_" + id, response);
+
+        return response;
     }
 
     @Override

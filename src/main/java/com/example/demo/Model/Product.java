@@ -3,9 +3,11 @@ package com.example.demo.Model;
 import jakarta.persistence.*;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "product")
-public class Product {
+public class Product implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
