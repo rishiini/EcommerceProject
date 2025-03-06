@@ -56,7 +56,6 @@ public class UserServiceImpl implements UserService{
 
         return userRepository.save(user);
     }
-
     private Token createToken(User user){
         Token token = new Token();
         token.setUser(user);
@@ -75,6 +74,14 @@ public class UserServiceImpl implements UserService{
     }
     @Override
     public User validateToken(String token) {
+        /*
+        1. Find that token in db
+        2. Check if it is not deleted
+        3. & Expiry time is greater than current time
+
+         */
+
+
         Optional<Token> tokenOptional = tokenRepository.findByValueAndDeletedAndExpiryGreaterThan(token, false, new Date());
         if(tokenOptional.isEmpty()){
             throw new RuntimeException("Token not exist");
